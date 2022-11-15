@@ -12,12 +12,13 @@
 <?import javafx.scene.control.MenuItem?>
 
 <?import com.sun.javafx.scene.control.ContextMenuContent.MenuBox?>
-<BorderPane fx:controller="com.example.javafx_beadando.HelloController" xmlns:fx="http://javafx.com/fxml">
+<?import javafx.scene.control.TableView?>
+<BorderPane fx:controller="com.example.javafx_beadando.HelloController" xmlns:fx="http://javafx.com/fxml" fx:id="Bpane">
     <top>
         <MenuBar>
             <Menu text="Adatbázis">
-                <MenuItem text="Olvasas"></MenuItem>
-                <MenuItem text="Olvasas2"></MenuItem>
+                <MenuItem text="Olvasas" onAction="#olvasas"></MenuItem>
+                <MenuItem text="Olvasas2" onAction="#olvasas2"></MenuItem>
                 <MenuItem text="Íras"></MenuItem>
                 <MenuItem text="Módosítás"></MenuItem>
                 <MenuItem text="Törölés"></MenuItem>
@@ -41,14 +42,21 @@
             </Menu>
         </MenuBar>
     </top>
-    <center>   <VBox alignment="CENTER" spacing="20" >
+    <center>
+        <VBox alignment="CENTER" spacing="20" >
         <padding>
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
         </padding>
 
-        <Label fx:id="welcomeText"/>
+        <Button fx:id="btn1">asd</Button>
+        <Button fx:id="btn2">asd</Button>
 
-        <Button text="Üdvözlűnk a Java Előadás beadndóban" onAction="#onHelloButtonClick"/>
+            <TableView fx:id="tabla"></TableView>
+
+
     </VBox>
+
+
+
     </center>
 </BorderPane>
