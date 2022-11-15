@@ -4,6 +4,7 @@ module com.example.javafx_beadando {
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
+    requires java.sql;
     //requires validatorfx;
 
     opens com.example.javafx_beadando to javafx.fxml;

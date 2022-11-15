@@ -48,10 +48,7 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
         </padding>
 
-        <Button fx:id="btn1">asd</Button>
-        <Button fx:id="btn2">asd</Button>
-
-            <TableView fx:id="tabla"></TableView>
+                    <TableView fx:id="tabla"></TableView>
 
 
     </VBox>
