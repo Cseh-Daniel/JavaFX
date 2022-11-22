@@ -12,48 +12,204 @@
 <?import javafx.scene.control.MenuItem?>
 
 <?import com.sun.javafx.scene.control.ContextMenuContent.MenuBox?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TableView?>
-<BorderPane fx:controller="com.example.javafx_beadando.HelloController" xmlns:fx="http://javafx.com/fxml" fx:id="Bpane">
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ToggleGroup?>
+<BorderPane fx:controller="com.example.javafx_beadando.HelloController" xmlns:fx="http://javafx.com/fxml">
     <top>
         <MenuBar>
             <Menu text="Adatbázis">
-                <MenuItem text="Olvasas" onAction="#olvasas"></MenuItem>
-                <MenuItem text="Olvasas2" onAction="#olvasas2"></MenuItem>
-                <MenuItem text="Íras"></MenuItem>
-                <MenuItem text="Módosítás"></MenuItem>
-                <MenuItem text="Törölés"></MenuItem>
+                <MenuItem text="Olvasas" onAction="#Olvasas"/>
+                <MenuItem text="Olvasas2" onAction="#Olvasas2"/>
+                <MenuItem text="Íras" onAction="#Insert"/>
+                <MenuItem text="Módosítás" onAction="#Update"/>
+                <MenuItem text="Törlés" onAction="#Delete"/>
             </Menu>
-            <Menu text="Rest1"></Menu>
-            <Menu text="Rest2"></Menu>
+            <Menu text="Rest1">
+                <MenuItem text="Get" onAction="#Rest1Get" />
+                <MenuItem text="Post" onAction="#Rest1Post"/>
+                <MenuItem text="Delete" onAction="#Rest1Delete"/>
+                <MenuItem text="Update" onAction="#Rest1Update"/>
+            </Menu>
+            <Menu text="Rest2">
+                <MenuItem text="Get" onAction="#Rest2Get" />
+                <MenuItem text="Post" onAction="#Rest2Post"/>
+                <MenuItem text="Delete" onAction="#Rest2Delete"/>
+                <MenuItem text="Update" onAction="#Rest2Update"/>
+            </Menu>
             <Menu text="SoapKliens ">
-                <MenuItem text="Letöltés"></MenuItem>
-                <MenuItem text="Letöltés 2"></MenuItem>
-                <MenuItem text="Grafikon"></MenuItem>
+                <MenuItem text="Letöltés"/>
+                <MenuItem text="Letöltés 2"/>
+                <MenuItem text="Grafikon"/>
             </Menu>
             <Menu text="Adatbányászat">
-                <MenuItem text="Döntési fa"></MenuItem>
-                <MenuItem text="Több algoritmus 1"></MenuItem>
-                <MenuItem text="Több algoritmus 2"></MenuItem>
-
+                <MenuItem text="Döntési fa"/>
+                <MenuItem text="Több algoritmus 1"/>
+                <MenuItem text="Több algoritmus 2"/>
             </Menu>
             <Menu text="Egyéb">
-                <MenuItem text="Párhuzamos almenü"></MenuItem>
-                <MenuItem text="Stream almenü"></MenuItem>
+                <MenuItem text="Páthuzamos almenü" onAction="#Parhuzamos"/>
+                <MenuItem text="Stream almenü" onAction="#Stream"/>
             </Menu>
         </MenuBar>
     </top>
-    <center>
-        <VBox alignment="CENTER" spacing="20" >
-        <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-        </padding>
+     <center>
+         <HBox fx:id="mainCucc">
+             <VBox fx:id="OlvasasMenu">
+                 <VBox fx:id="vbOlvas" spacing="20">
+                     <Label>Adatbázis szűrő:</Label>
+                     <HBox>
+                         <HBox> <Label>Filmcím:</Label> <TextField fx:id="tfOlvas"/></HBox>
+                         <HBox> <Label>Műfaj:</Label> <ComboBox fx:id="cbOlvasas" /></HBox>
 
-                    <TableView fx:id="tabla"></TableView>
+                         <HBox><Label>Szinkron:</Label>
+                             <RadioButton text="fel">
+                                 <toggleGroup>
+                                     <ToggleGroup fx:id="group"/>
+                                 </toggleGroup>
+                             </RadioButton>
+                             <RadioButton text="mb">
+                                 <toggleGroup>
+                                     <fx:reference source="group"/>
+                                 </toggleGroup>
+                             </RadioButton>
+                         </HBox>
 
+                         <CheckBox text="Fekete-fehér?" fx:id="cbSzines" />
+                     </HBox>
+                     <Button onAction="#Filter" text="Szűrés" />
+                 </VBox>
+                 <VBox fx:id="vbInsert" spacing="20">
+                     <Label>Film beszúrása:</Label>
+                     <VBox>
+                         <HBox> <Label>Film címe:</Label> <TextField fx:id="tfInsertFilmcim"/></HBox>
+                         <HBox> <Label>Műfaj:</Label> <ComboBox fx:id="cbInsertMufaj" /></HBox>
+                         <HBox> <Label>Szinkron:</Label> <ComboBox fx:id="cbInsertSzinkron" /></HBox>
+                         <HBox> <Label>Szines:</Label> <ComboBox fx:id="cbInsertSzines" /></HBox>
+                         <HBox> <Label>Szarmazas:</Label> <TextField fx:id="tfInsertSzarmazas"/></HBox>
+                         <HBox> <Label>Hossz:</Label> <TextField fx:id="tfInsertHossz"/></HBox>
 
-    </VBox>
+                         <Button text="Beszúrás" onAction="#InsertToTable"/>
+                     </VBox>
 
-
-
+                 </VBox>
+                 <VBox fx:id="vbUpdate"  spacing="20">
+                     <Label>Kategória módosítása:</Label>
+                     <ComboBox fx:id="cbShowKateg" onAction="#ShowUpdate" />
+                 </VBox>
+                 <VBox fx:id="vbShowUpdate">
+                     <HBox> <Label>Kategória név:</Label> <TextField fx:id="tfUpdateKategNev"/></HBox>
+                     <HBox> <Label>Ár:</Label> <TextField fx:id="tfupdateKategAr" /></HBox>
+                     <Button text="Módosítás" onAction="#UpdateKateg"/>
+                 </VBox>
+                 <VBox fx:id="vbDelete">
+                     <Label>Pizza törlése:</Label>
+                     <ComboBox fx:id="cbShowPizza" />
+                     <Button text="Törlés" onAction="#DeletePizza"/>
+                 </VBox>
+                 <TableView fx:id="tOlvas" minWidth="800"/>
+             </VBox>
+             <VBox fx:id="vbRest1">
+                 <VBox fx:id="vbRest1Get" spacing="10">
+                     <TableView fx:id="tRest1Get" minWidth="880" />
+                 </VBox>
+                 <VBox fx:id="vbRest1Post" spacing="10">
+                     <Label>Rest beszúrása:</Label>
+                     <VBox>
+                         <HBox> <Label>Id:</Label> <TextField fx:id="tfRest1PostId"/></HBox>
+                         <HBox> <Label>Name:</Label> <TextField fx:id="tfRest1PostName"/></HBox>
+                         <HBox> <Label>Email:</Label> <TextField fx:id="tfRest1PostEmail" /></HBox>
+                         <HBox> <Label>Gender:</Label> <ComboBox fx:id="tfRest1PostGender" /></HBox>
+                         <HBox> <Label>Status:</Label> <ComboBox fx:id="tfRest1PostStatus" /></HBox>
+                         <Button text="Post" onAction="#Rest1PostDo"/>
+                         <HBox> <Label fx:id="lResponseRest1Post"/></HBox>
+                     </VBox>
+                 </VBox>
+                 <VBox fx:id="vbRest1Delete" spacing="10">
+                     <HBox> <Label>ID:</Label> <TextField fx:id="tfRest1Delete" /></HBox>
+                     <Button text="Delete" onAction="#DoRest1Delete" />
+                     <HBox> <Label fx:id="lDeleted"/> </HBox>
+                 </VBox>
+                 <VBox fx:id="vbRest1Update" spacing="10">
+                     <HBox> <Label>ID:</Label> <TextField fx:id="tfRest1UpdateId" /></HBox>
+                     <HBox> <Label>Name:</Label> <TextField fx:id="tfRest1UpdateName" /></HBox>
+                     <HBox> <Label>Email:</Label> <TextField fx:id="tfRest1UpdateEmail" /></HBox>
+                     <HBox> <Label>Gender:</Label> <ComboBox fx:id="cbRest1UpdateGender" /></HBox>
+                     <HBox> <Label>Status:</Label> <ComboBox fx:id="cbRest1UpdateStatus" /></HBox>
+                     <Button text="Update" onAction="#DoRest1Update" />
+                     <HBox> <Label fx:id="lUpdated"/> </HBox>
+                 </VBox>
+             </VBox>
+             <VBox fx:id="vbRest2">
+                 <VBox fx:id="vbRest2Get" spacing="10">
+                     <TableView fx:id="tRest2Get" minWidth="880" />
+                 </VBox>
+                 <VBox fx:id="vbRest2Post" spacing="10">
+                     <Label>Rest beszúrása:</Label>
+                     <VBox>
+                         <HBox> <Label>Id:</Label> <TextField fx:id="tfRest2PostId"/></HBox>
+                         <HBox> <Label>Name:</Label> <TextField fx:id="tfRest2PostName"/></HBox>
+                         <HBox> <Label>Email:</Label> <TextField fx:id="tfRest2PostEmail" /></HBox>
+                         <Button text="Post" onAction="#Rest2PostDo"/>
+                         <HBox> <Label fx:id="lResponseRest2Post"/></HBox>
+                     </VBox>
+                 </VBox>
+                 <VBox fx:id="vbRest2Delete" spacing="10">
+                     <HBox> <Label>ID:</Label> <TextField fx:id="tfRest2Delete" /></HBox>
+                     <Button text="Delete" onAction="#DoRest2Delete" />
+                     <HBox> <Label fx:id="lDeleted2"/> </HBox>
+                 </VBox>
+                 <VBox fx:id="vbRest2Update" spacing="10">
+                     <HBox> <Label>ID:</Label> <TextField fx:id="tfRest2UpdateId" /></HBox>
+                     <HBox> <Label>Name:</Label> <TextField fx:id="tfRest2UpdateName" /></HBox>
+                     <HBox> <Label>Email:</Label> <TextField fx:id="tfRest2UpdateEmail" /></HBox>
+                     <Button text="Update" onAction="#DoRest1Update" />
+                     <HBox> <Label fx:id="lUpdated2"/> </HBox>
+                 </VBox>
+             </VBox>
+             <VBox fx:id="vbEgyeb">
+                 <VBox fx:id="vbParhuzamos" spacing="10">
+                     <HBox> <Label>Nyomj meg:</Label> <Button fx:id="bParhuzamos" text="Gomb" onAction="#DoAThing"/></HBox>
+                     <HBox> <Label>Label1:</Label> <Label fx:id="lParhuzamos1"/></HBox>
+                     <HBox> <Label>label2:</Label> <Label fx:id="lParhuzamos2"/></HBox>
+                 </VBox>
+                 <VBox fx:id="vbStream" spacing="10">
+                     <Label>Adatbázis szűrő:</Label>
+                     <HBox>
+                             <HBox> <Label>ID:</Label> <TextField fx:id="tfStreamId"/></HBox>
+                             <HBox> <Label>Kategória:</Label> <ComboBox fx:id="cbStreamkateg" /></HBox>
+                             <VBox>
+                                 <RadioButton text="Popey">
+                                     <toggleGroup>
+                                         <ToggleGroup fx:id="group1"/>
+                                     </toggleGroup>
+                                 </RadioButton>
+                                 <RadioButton text="Ráki" >
+                                     <toggleGroup>
+                                         <fx:reference source="group1"/>
+                                     </toggleGroup>
+                                 </RadioButton>
+                                 <RadioButton text="Semmi"  >
+                                 <toggleGroup>
+                                     <fx:reference source="group1"/>
+                                 </toggleGroup>
+                                </RadioButton>
+                             </VBox>
+                             <CheckBox text="Vega?" fx:id="cbStreamVega" />
+                         </HBox>
+                     <Button onAction="#FilterStream" text="Szűrés" />
+                     <TableView fx:id="tStream" />
+                 </VBox>
+             </VBox>
+         </HBox>
     </center>
 </BorderPane>

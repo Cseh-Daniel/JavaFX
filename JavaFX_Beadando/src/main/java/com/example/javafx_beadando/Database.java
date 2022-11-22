@@ -8,15 +8,38 @@ public class Database {
     private String mozinev;
     private String cim;
 
+    public String getSzinkron() {
+        return szinkron;
+    }
+
+    public void setSzinkron(String szinkron) {
+        this.szinkron = szinkron;
+    }
+
+    private String szinkron;
+
+    public boolean isSzines() {
+        return szines;
+    }
+
+    public void setSzines(boolean szines) {
+        this.szines = szines;
+    }
+
+    private boolean szines;
+
+
     public Database() {
     }
 
-    public Database(String filmcim, String szarmazas, String mufaj, String mozinev, String cim) {
+    public Database(String filmcim, String szarmazas, String mufaj, String mozinev, String cim,String szinkron,boolean szines) {
         this.filmcim = filmcim;
         this.szarmazas = szarmazas;
         this.mufaj = mufaj;
         this.mozinev = mozinev;
         this.cim = cim;
+        this.szinkron=szinkron;
+        this.szines=szines;
     }
 
     public String getFilmcim() {

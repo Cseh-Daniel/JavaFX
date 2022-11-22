@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+
+<?import com.sun.javafx.scene.control.ContextMenuContent.MenuBox?>
+<?import javafx.scene.control.TableView?>
+<BorderPane fx:controller="com.example.javafx_beadando.HelloController" xmlns:fx="http://javafx.com/fxml" fx:id="Bpane">
+    <top>
+        <MenuBar fx:id="Navbar">
+            <Menu text="Adatbázis">
+                <MenuItem text="Olvasas" onAction="#olvasas"></MenuItem>
+                <MenuItem text="Olvasas2" onAction="#olvasas2"></MenuItem>
+                <MenuItem text="Íras"></MenuItem>
+                <MenuItem text="Módosítás"></MenuItem>
+                <MenuItem text="Törölés"></MenuItem>
+            </Menu>
+            <Menu text="Rest1"></Menu>
+            <Menu text="Rest2"></Menu>
+            <Menu text="SoapKliens ">
+                <MenuItem text="Letöltés"></MenuItem>
+                <MenuItem text="Letöltés 2"></MenuItem>
+                <MenuItem text="Grafikon"></MenuItem>
+            </Menu>
+            <Menu text="Adatbányászat">
+                <MenuItem text="Döntési fa"></MenuItem>
+                <MenuItem text="Több algoritmus 1"></MenuItem>
+                <MenuItem text="Több algoritmus 2"></MenuItem>
+
+            </Menu>
+            <Menu text="Egyéb">
+                <MenuItem text="Párhuzamos almenü"></MenuItem>
+                <MenuItem text="Stream almenü"></MenuItem>
+            </Menu>
+        </MenuBar>
+    </top>
+    <center>
+
+        <VBox alignment="CENTER" spacing="20" fx:id="mainVB">
+        <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+        </padding>
+
+                    <TableView fx:id="tabla"></TableView>
+
+
+    </VBox>
+
+
+
+    </center>
+
+
+    <left>
+
+
+
+
+    </left>
+
+</BorderPane>
