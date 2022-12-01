@@ -103,18 +103,21 @@
 
                  </VBox>
                  <VBox fx:id="vbUpdate"  spacing="20">
-                     <Label>Kategória módosítása:</Label>
-                     <ComboBox fx:id="cbShowKateg" onAction="#ShowUpdate" />
+                     <Label>Mozi módosítása:</Label>
+                     <ComboBox fx:id="cbShowMozi" onAction="#ShowUpdate" />
                  </VBox>
                  <VBox fx:id="vbShowUpdate">
-                     <HBox> <Label>Kategória név:</Label> <TextField fx:id="tfUpdateKategNev"/></HBox>
-                     <HBox> <Label>Ár:</Label> <TextField fx:id="tfupdateKategAr" /></HBox>
-                     <Button text="Módosítás" onAction="#UpdateKateg"/>
+                     <HBox> <Label>Mozi neve:</Label> <TextField fx:id="tfUpdateMoziNev"/></HBox>
+                     <HBox> <Label>Irányítószám:</Label> <TextField fx:id="tfupdateIrszam" /></HBox>
+                     <HBox> <Label>Cím:</Label> <TextField fx:id="tfupdateCim" /></HBox>
+                     <HBox> <Label>Telefon:</Label> <TextField fx:id="tfupdateTelefon" /></HBox>
+
+                     <Button text="Módosítás" onAction="#UpdateMozi"/>
                  </VBox>
                  <VBox fx:id="vbDelete">
-                     <Label>Pizza törlése:</Label>
-                     <ComboBox fx:id="cbShowPizza" />
-                     <Button text="Törlés" onAction="#DeletePizza"/>
+                     <Label>Mozi törlése:</Label>
+                     <ComboBox fx:id="cbShowDeleteMozi" />
+                     <Button text="Törlés" onAction="#DeleteMozi"/>
                  </VBox>
                  <TableView fx:id="tOlvas" minWidth="800"/>
              </VBox>

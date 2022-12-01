@@ -9,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class HelloController {
@@ -16,6 +17,8 @@ public class HelloController {
 
     @FXML public VBox OlvasasMenu;
     @FXML public TableView<Database> tOlvas;
+
+
     //Lapok:
     public VBox vbOlvas;
     public VBox vbInsert;
@@ -35,13 +38,8 @@ public class HelloController {
     public TextField tfOlvas;
     public CheckBox cbSzines;
     public ToggleGroup group;
-    public TextField tfInsertPizzaNev;
     public ComboBox cbInsertMufaj;
-    public CheckBox tfInsertVega;
-    public ComboBox cbShowKateg;
-    public TextField tfUpdateKategNev;
-    public TextField tfupdateKategAr;
-    public ComboBox cbShowPizza;
+
     //POST
     public TextField tfRest1PostId;
     public ComboBox tfRest1PostStatus;
@@ -60,8 +58,6 @@ public class HelloController {
     public ComboBox cbRest1UpdateGender;
     public ComboBox cbRest1UpdateStatus;
     public TextField tfRest2PostId;
-    public ComboBox tfRest2PostStatus;
-    public ComboBox tfRest2PostGender;
     public TextField tfRest2PostEmail;
     public TextField tfRest2PostName;
     public Label lResponseRest2Post;
@@ -73,8 +69,6 @@ public class HelloController {
     public TextField tfRest2UpdateId;
     public TextField tfRest2UpdateName;
     public TextField tfRest2UpdateEmail;
-    public ComboBox cbRest2UpdateGender;
-    public ComboBox cbRest2UpdateStatus;
     public Button bParhuzamos;
     public Label lParhuzamos1;
     public Label lParhuzamos2;
@@ -93,13 +87,28 @@ public class HelloController {
     public TextField tfInsertSzarmazas;
     public TextField tfInsertHossz;
     public TextField tfInsertFilmcim;
+    public ComboBox cbShowMozi;
+    public TextField tfUpdateMoziNev;
+    public TextField tfupdateIrszam;
+    public TextField tfupdateCim;
+    public TextField tfupdateTelefon;
+    public ComboBox cbShowDeleteMozi;
+
+    @FXML private TableColumn<RestUser, String> RestUserid;
+    @FXML private TableColumn<RestUser, String> RestUserName;
+    @FXML private TableColumn<RestUser, String> RestUserEmail;
+    @FXML private TableColumn<RestUser, String> RestUserGender;
+    @FXML private TableColumn<RestUser, String> RestStatus;
+
     String url="jdbc:mysql://localhost/mozimusor?user=root";
     DatabaseDAO database=new DatabaseDAO(url);
+    MoziDAO mozibase=new MoziDAO(url);
+
 
     public void Clear()
     {
         mainCucc.getChildren().removeAll(mainCucc.getChildren());
-        cbShowKateg.setDisable(false);
+        cbShowMozi.setDisable(false);
     }
 
     public void Mutat(String a){
@@ -131,6 +140,63 @@ public class HelloController {
             cbInsertSzines.getItems().addAll("0","-1");
 
             OlvasasMenu.getChildren().addAll(vbInsert);
+            break;
+        case "Update":
+            mainCucc.getChildren().add(OlvasasMenu);
+            OlvasasMenu.getChildren().removeAll(OlvasasMenu.getChildren());
+            cbShowMozi.getItems().removeAll(cbShowMozi.getItems());
+            cbShowMozi.getItems().addAll(mozibase.getMoziNev());
+            OlvasasMenu.getChildren().addAll(vbUpdate);
+            break;
+        case "ShowUpdate":
+            mainCucc.getChildren().add(OlvasasMenu);
+            OlvasasMenu.getChildren().removeAll(OlvasasMenu.getChildren());
+            OlvasasMenu.getChildren().addAll(vbUpdate,vbShowUpdate);
+            break;
+        case "Delete":
+            mainCucc.getChildren().add(OlvasasMenu);
+            OlvasasMenu.getChildren().removeAll(OlvasasMenu.getChildren());
+            cbShowDeleteMozi.getItems().removeAll(cbShowDeleteMozi.getItems());
+            cbShowDeleteMozi.getItems().addAll(mozibase.getMoziNev());
+            OlvasasMenu.getChildren().addAll(vbDelete);
+            break;
+        case "Rest1Get":
+            mainCucc.getChildren().add(vbRest1);
+            vbRest1.getChildren().removeAll(vbRest1.getChildren());
+            vbRest1.getChildren().addAll(vbRest1Get);
+            break;
+        case "Rest1Post":
+            mainCucc.getChildren().add(vbRest1);
+            vbRest1.getChildren().removeAll(vbRest1.getChildren());
+            tfRest1PostStatus.getItems().removeAll(tfRest1PostStatus.getItems());
+            tfRest1PostGender.getItems().removeAll(tfRest1PostGender.getItems());
+            tfRest1PostGender.getItems().addAll("male","female");
+            tfRest1PostStatus.getItems().addAll("active","inactive");
+            vbRest1.getChildren().addAll(vbRest1Post);
+            break;
+        case "Rest1Delete":
+            mainCucc.getChildren().add(vbRest1);
+            vbRest1.getChildren().removeAll(vbRest1.getChildren());
+            vbRest1.getChildren().addAll(vbRest1Delete);
+            break;
+        case "Rest1Update":
+            mainCucc.getChildren().add(vbRest1);
+            vbRest1.getChildren().removeAll(vbRest1.getChildren());
+            cbRest1UpdateGender.getItems().removeAll(cbRest1UpdateGender.getItems());
+            cbRest1UpdateStatus.getItems().removeAll(cbRest1UpdateStatus.getItems());
+            cbRest1UpdateGender.getItems().addAll("male","female");
+            cbRest1UpdateStatus.getItems().addAll("active","inactive");
+            vbRest1.getChildren().addAll(vbRest1Update);
+            break;
+        case "Parhuzamos":
+            mainCucc.getChildren().add(vbEgyeb);
+            vbEgyeb.getChildren().removeAll(vbEgyeb.getChildren());
+            vbEgyeb.getChildren().addAll(vbParhuzamos);
+            break;
+        case "Stream":
+            mainCucc.getChildren().add(vbEgyeb);
+            vbEgyeb.getChildren().removeAll(vbEgyeb.getChildren());
+            vbEgyeb.getChildren().addAll(vbStream);
             break;
     }
 
@@ -204,13 +270,33 @@ public class HelloController {
     protected void Insert(ActionEvent actionEvent){
         Mutat("Insert");
     }
-    public void Update(ActionEvent actionEvent) {
+
+    public void Rest1Get(ActionEvent actionEvent) throws IOException {
+        Mutat("Rest1Get");
+        Rest1Tabla();
+
     }
 
-    public void Delete(ActionEvent actionEvent) {
-    }
+    public void Rest1Tabla() throws IOException {
+        tRest1Get.getItems().removeAll(tRest1Get.getItems());
+        tRest1Get.getColumns().removeAll(tRest1Get.getColumns());
+        //RestUser[] user = RestKliens.GET("https://gorest.co.in/public/v2/users");
 
-    public void Rest1Get(ActionEvent actionEvent) {
+        RestUserid = new TableColumn("RestUserid");
+        RestUserName = new TableColumn("RestUserName");
+        RestUserEmail = new TableColumn("RestUserEmail");
+        RestUserGender = new TableColumn("RestUserGender");
+        RestStatus = new TableColumn("RestStatus");
+
+        tRest1Get.getColumns().addAll(RestUserid, RestUserName,RestUserEmail,RestUserGender,RestStatus);
+
+        RestUserid.setCellValueFactory(new PropertyValueFactory<>("id"));
+        RestUserName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        RestUserEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        RestUserGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        RestStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        //tRest1Get.getItems().addAll(user);
     }
 
     public void Rest1Post(ActionEvent actionEvent) {
@@ -284,20 +370,53 @@ public class HelloController {
         }catch (NumberFormatException e) {
             hossz=0;
         }
-
-
-
         database.InsertFilm(filmcim,mufaj,szinkron,szines,szarmazas,hossz);
-       // cbShowKateg.getItems().removeAll(cbShowKateg.getItems());
         Mutat("");
     }
+
+    public void Update(ActionEvent actionEvent) {
+        Mutat("Update");
+    }
+
     public void ShowUpdate(ActionEvent actionEvent) {
+        Mutat("ShowUpdate");
+        if(cbShowMozi.getSelectionModel().getSelectedItem() == null) Mutat("");
+        else
+        {
+           Mozi kiir = mozibase.getMozi(cbShowMozi.getSelectionModel().getSelectedItem().toString());
+            tfUpdateMoziNev.setText(kiir.getMozinev());
+            tfupdateIrszam.setText(String.valueOf(kiir.getIrszam()));
+            tfupdateCim.setText(String.valueOf(kiir.getCim()));
+            tfupdateTelefon.setText(String.valueOf(kiir.getTelefon()));
+            cbShowMozi.setDisable(true);
+        }
+
     }
 
-    public void UpdateKateg(ActionEvent actionEvent) {
+    public void UpdateMozi(ActionEvent actionEvent) {
+
+        Mozi a= mozibase.getMozi(tfUpdateMoziNev.getText());
+
+        Mozi update = new Mozi(a.getMoziazon(),tfUpdateMoziNev.getText(),Integer.parseInt(tfupdateIrszam.getText()),tfupdateCim.getText(),tfupdateTelefon.getText());
+        mozibase.UpdateMozi(update);
+        cbShowMozi.setDisable(false);
+        cbShowMozi.getItems().removeAll(cbShowMozi.getItems());
+        Mutat("Update");
+
+
     }
 
-    public void DeletePizza(ActionEvent actionEvent) {
+    public void Delete(ActionEvent actionEvent) {
+        Mutat("Delete");
+    }
+
+    public void DeleteMozi(ActionEvent actionEvent) {
+
+        String dMozi = cbShowDeleteMozi.getSelectionModel().getSelectedItem().toString();
+        mozibase.deleteMozi(dMozi);
+        cbShowDeleteMozi.getItems().removeAll(cbShowDeleteMozi.getItems());
+        Mutat("Delete");
+
     }
 
     public void Rest1PostDo(ActionEvent actionEvent) {
@@ -320,4 +439,6 @@ public class HelloController {
 
     public void FilterStream(ActionEvent actionEvent) {
     }
+
+
 }
