@@ -1,5 +1,6 @@
 package com.example.javafx_beadando;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -11,6 +12,11 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import static java.lang.Boolean.parseBoolean;
 
 public class HelloController {
 
@@ -72,8 +78,8 @@ public class HelloController {
     public Button bParhuzamos;
     public Label lParhuzamos1;
     public Label lParhuzamos2;
-    public TextField tfStreamId;
-    public ComboBox cbStreamkateg;
+    //public TextField tfStreamId;
+    //public ComboBox cbStreamkateg;
     public VBox vbStream;
     public CheckBox cbStreamVega;
     public TableView tStream;
@@ -93,6 +99,9 @@ public class HelloController {
     public TextField tfupdateCim;
     public TextField tfupdateTelefon;
     public ComboBox cbShowDeleteMozi;
+    public ComboBox cbStreamMufaj;
+    public CheckBox cbStreamSzines;
+    public TextField tfStreamCim;
 
     @FXML private TableColumn<RestUser, String> RestUserid;
     @FXML private TableColumn<RestUser, String> RestUserName;
@@ -280,7 +289,7 @@ public class HelloController {
     public void Rest1Tabla() throws IOException {
         tRest1Get.getItems().removeAll(tRest1Get.getItems());
         tRest1Get.getColumns().removeAll(tRest1Get.getColumns());
-        //RestUser[] user = RestKliens.GET("https://gorest.co.in/public/v2/users");
+        RestUser[] user = RestKliens.GET("https://gorest.co.in/public/v2/users");
 
         RestUserid = new TableColumn("RestUserid");
         RestUserName = new TableColumn("RestUserName");
@@ -296,16 +305,33 @@ public class HelloController {
         RestUserGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
         RestStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        //tRest1Get.getItems().addAll(user);
+        tRest1Get.getItems().addAll(user);
     }
 
     public void Rest1Post(ActionEvent actionEvent) {
+        Mutat("Rest1Post");
     }
 
-    public void Rest1Delete(ActionEvent actionEvent) {
+    public void Rest1PostDo(ActionEvent actionEvent) throws IOException {
+        RestUser user = new RestUser(Integer.parseInt(tfRest1PostId.getText()),tfRest1PostName.getText(),tfRest1PostEmail.getText(),tfRest1PostGender.getSelectionModel().getSelectedItem().toString(),tfRest1PostStatus.getSelectionModel().getSelectedItem().toString());
+        lResponseRest1Post.setText("Válasz:" + RestKliens.POST(user,"https://gorest.co.in/public/v2/users?access-token=ac3cfbe3aff6093675c6c8df54b71a5ad482fcf498d66692ab21c7e54af62e12"));
     }
 
-    public void Rest1Update(ActionEvent actionEvent) {
+    public void Rest1Delete(ActionEvent actionEvent) { Mutat("Rest1Delete"); }
+
+    public void DoRest1Delete(ActionEvent actionEvent) throws IOException {
+        String id = tfRest1Delete.getText();
+        String re = RestKliens.DELETE("https://gorest.co.in/public/v2/users/"+id+"?access-token=ac3cfbe3aff6093675c6c8df54b71a5ad482fcf498d66692ab21c7e54af62e12");
+        if(re == "Hiba!") lDeleted.setText("Hiba, nincs ilyen id!");
+        else  lDeleted.setText("Sikeres törlés!");
+    }
+
+    public void Rest1Update(ActionEvent actionEvent) { Mutat("Rest1Update"); }
+
+    public void DoRest1Update(ActionEvent actionEvent) throws IOException {
+        RestUser user = new RestUser(Integer.parseInt(tfRest1UpdateId.getText()),tfRest1UpdateName.getText(),tfRest1UpdateEmail.getText(),cbRest1UpdateGender.getSelectionModel().getSelectedItem().toString(),cbRest1UpdateStatus.getSelectionModel().getSelectedItem().toString());
+        if(RestKliens.PUT(user,"https://gorest.co.in/public/v2/users/"+user.getId()+"?access-token=ac3cfbe3aff6093675c6c8df54b71a5ad482fcf498d66692ab21c7e54af62e12") == "Hiba!") lUpdated.setText("Az id nem megfelelő vagy az email foglalt.");
+        else lUpdated.setText("Sikeres");
     }
 
     public void Rest2Get(ActionEvent actionEvent) {
@@ -321,9 +347,50 @@ public class HelloController {
     }
 
     public void Parhuzamos(ActionEvent actionEvent) {
+        Mutat("Parhuzamos");
+    }
+
+    public void DoAThing(ActionEvent actionEvent)
+    {
+        Thread thread1 = new Thread(() -> {
+            try {
+                while(true)
+                {
+                    Platform.runLater(() -> lParhuzamos1.setText("Szöveg1"));
+                    Thread.sleep(2000);
+                    Platform.runLater(() -> lParhuzamos1.setText(""));
+                    Thread.sleep(2000);
+                }
+            }
+            catch (Exception exc) {
+                // should not be able to get here...
+                throw new Error("Unexpected interruption");
+            }
+        });
+        thread1.start();
+        Thread thread2 = new Thread(() -> {
+            try {
+                while (true)
+                {
+                    Platform.runLater(() -> lParhuzamos2.setText("Szöveg2"));
+                    Thread.sleep(3000);
+                    Platform.runLater(() -> lParhuzamos2.setText(""));
+                    Thread.sleep(3000);
+                }
+            }
+            catch (Exception exc) {
+                // should not be able to get here...
+                throw new Error("Unexpected interruption");
+            }
+        });
+        thread2.start();
     }
 
     public void Stream(ActionEvent actionEvent) {
+        Mutat("Stream");
+        cbStreamMufaj.getItems().removeAll(cbStreamMufaj.getItems());
+        cbStreamMufaj.getItems().add(null);
+        cbStreamMufaj.getItems().addAll(database.Mufajok());
     }
 
 
@@ -419,25 +486,86 @@ public class HelloController {
 
     }
 
-    public void Rest1PostDo(ActionEvent actionEvent) {
-    }
-
-    public void DoRest1Delete(ActionEvent actionEvent) {
-    }
-
-    public void DoRest1Update(ActionEvent actionEvent) {
-    }
-
-    public void Rest2PostDo(ActionEvent actionEvent) {
-    }
-
-    public void DoRest2Delete(ActionEvent actionEvent) {
-    }
-
-    public void DoAThing(ActionEvent actionEvent) {
-    }
 
     public void FilterStream(ActionEvent actionEvent) {
+        ArrayList<Database> adat = database.getAll("");
+        ArrayList<String> DataB = new ArrayList<>();
+        System.out.println( adat.get(0).toString());
+        for(int i =0; i < adat.size(); i++)
+        {
+            DataB.add(adat.get(i).toString());
+        }
+        String le ="";
+        if(!tfStreamCim.getText().isEmpty())
+        {
+            le +="^"+tfStreamCim.getText()+",.*";
+        }
+
+        System.out.println(le);
+
+                if(cbStreamMufaj.getSelectionModel().getSelectedItem() != null) {
+            le += ".*" + cbStreamMufaj.getSelectionModel().getSelectedItem() + ",.*";
+        }
+        System.out.println(le);
+
+        if(group1.getSelectedToggle() != null )
+        {
+            RadioButton selectedRadioButton = (RadioButton) group1.getSelectedToggle();
+            String toogleGroupValue = selectedRadioButton.getText();
+            le += ".*," + toogleGroupValue + ",.*";
+        }
+        System.out.println(le);
+
+        if(cbStreamSzines.isSelected())
+        {
+            le+= "false$" ;
+
+        }else{ le+= "true$" ;}
+
+        System.out.println(le);
+        Pattern pattern = Pattern.compile(le);
+
+        List<String> matching = DataB.stream()
+                .filter(pattern.asPredicate())
+                .collect(Collectors.toList());
+
+        System.out.println(matching);
+
+        ArrayList<Database> StreamRned = new ArrayList<>();
+        for(int i = 0 ; i < matching.size(); i++)
+        {
+            String a[] = matching.get(i).split(",");
+
+
+
+            //Database b = new Database(Integer.parseInt(a[0]),Integer.parseInt(a[1]),Integer.parseInt(a[2]),a[3],a[4],a[5],a[6],parseBoolean(a[7]));
+            Database b = new Database(a[0],a[1],a[2],a[3],a[4],a[5],parseBoolean(a[6]));
+            StreamRned.add(b);
+        }
+        tStream.getItems().removeAll(tStream.getItems());
+        tStream.getColumns().removeAll(tStream.getColumns());
+
+        TableColumn filmcim = new TableColumn("filmcim");
+        TableColumn szarmazas = new TableColumn("származás");
+        TableColumn mufaj = new TableColumn("műfaj");
+        TableColumn mozinev = new TableColumn("Mozinév");
+        TableColumn cim = new TableColumn("cim");
+        TableColumn szinkron = new TableColumn("szinkron");
+        TableColumn szines = new TableColumn("szines");
+
+
+        tStream.getColumns().addAll(filmcim,szarmazas,mufaj,mozinev,cim,szinkron,szines);
+
+        filmcim.setCellValueFactory(new PropertyValueFactory<>("filmcim"));
+        szarmazas.setCellValueFactory(new PropertyValueFactory<>("szarmazas"));
+        mufaj.setCellValueFactory(new PropertyValueFactory<>("mufaj"));
+        mozinev.setCellValueFactory(new PropertyValueFactory<>("mozinev"));
+        cim.setCellValueFactory(new PropertyValueFactory<>("cim"));
+        szinkron.setCellValueFactory(new PropertyValueFactory<>("szinkron"));
+        szines.setCellValueFactory(new PropertyValueFactory<>("szines"));
+
+        tStream.getItems().addAll(StreamRned);
+
     }
 
 
