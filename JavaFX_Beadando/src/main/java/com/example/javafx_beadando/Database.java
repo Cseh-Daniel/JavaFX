@@ -81,4 +81,9 @@ public class Database {
     public void setCim(String cim) {
         this.cim = cim;
     }
+
+    @Override
+    public String toString() {
+        return filmcim+","+szarmazas+","+ mufaj+","+ mozinev+","+ cim+","+ szinkron+","+ szines;
+    }
 }

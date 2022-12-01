@@ -57,7 +57,7 @@
                 <MenuItem text="Több algoritmus 2"/>
             </Menu>
             <Menu text="Egyéb">
-                <MenuItem text="Páthuzamos almenü" onAction="#Parhuzamos"/>
+                <MenuItem text="Párhuzamos almenü" onAction="#Parhuzamos"/>
                 <MenuItem text="Stream almenü" onAction="#Stream"/>
             </Menu>
         </MenuBar>
@@ -152,33 +152,7 @@
                      <HBox> <Label fx:id="lUpdated"/> </HBox>
                  </VBox>
              </VBox>
-             <VBox fx:id="vbRest2">
-                 <VBox fx:id="vbRest2Get" spacing="10">
-                     <TableView fx:id="tRest2Get" minWidth="880" />
-                 </VBox>
-                 <VBox fx:id="vbRest2Post" spacing="10">
-                     <Label>Rest beszúrása:</Label>
-                     <VBox>
-                         <HBox> <Label>Id:</Label> <TextField fx:id="tfRest2PostId"/></HBox>
-                         <HBox> <Label>Name:</Label> <TextField fx:id="tfRest2PostName"/></HBox>
-                         <HBox> <Label>Email:</Label> <TextField fx:id="tfRest2PostEmail" /></HBox>
-                         <Button text="Post" onAction="#Rest2PostDo"/>
-                         <HBox> <Label fx:id="lResponseRest2Post"/></HBox>
-                     </VBox>
-                 </VBox>
-                 <VBox fx:id="vbRest2Delete" spacing="10">
-                     <HBox> <Label>ID:</Label> <TextField fx:id="tfRest2Delete" /></HBox>
-                     <Button text="Delete" onAction="#DoRest2Delete" />
-                     <HBox> <Label fx:id="lDeleted2"/> </HBox>
-                 </VBox>
-                 <VBox fx:id="vbRest2Update" spacing="10">
-                     <HBox> <Label>ID:</Label> <TextField fx:id="tfRest2UpdateId" /></HBox>
-                     <HBox> <Label>Name:</Label> <TextField fx:id="tfRest2UpdateName" /></HBox>
-                     <HBox> <Label>Email:</Label> <TextField fx:id="tfRest2UpdateEmail" /></HBox>
-                     <Button text="Update" onAction="#DoRest1Update" />
-                     <HBox> <Label fx:id="lUpdated2"/> </HBox>
-                 </VBox>
-             </VBox>
+
              <VBox fx:id="vbEgyeb">
                  <VBox fx:id="vbParhuzamos" spacing="10">
                      <HBox> <Label>Nyomj meg:</Label> <Button fx:id="bParhuzamos" text="Gomb" onAction="#DoAThing"/></HBox>
@@ -188,26 +162,23 @@
                  <VBox fx:id="vbStream" spacing="10">
                      <Label>Adatbázis szűrő:</Label>
                      <HBox>
-                             <HBox> <Label>ID:</Label> <TextField fx:id="tfStreamId"/></HBox>
-                             <HBox> <Label>Kategória:</Label> <ComboBox fx:id="cbStreamkateg" /></HBox>
-                             <VBox>
-                                 <RadioButton text="Popey">
-                                     <toggleGroup>
-                                         <ToggleGroup fx:id="group1"/>
-                                     </toggleGroup>
-                                 </RadioButton>
-                                 <RadioButton text="Ráki" >
-                                     <toggleGroup>
-                                         <fx:reference source="group1"/>
-                                     </toggleGroup>
-                                 </RadioButton>
-                                 <RadioButton text="Semmi"  >
+                             <HBox> <Label>Filmcím:</Label> <TextField fx:id="tfStreamCim"/></HBox>
+                             <HBox> <Label>Műfaj:</Label> <ComboBox fx:id="cbStreamMufaj" /></HBox>
+
+                         <HBox><Label>Szinkron:</Label>
+                             <RadioButton text="fel">
+                                 <toggleGroup>
+                                     <ToggleGroup fx:id="group1"/>
+                                 </toggleGroup>
+                             </RadioButton>
+                             <RadioButton text="mb">
                                  <toggleGroup>
                                      <fx:reference source="group1"/>
                                  </toggleGroup>
-                                </RadioButton>
-                             </VBox>
-                             <CheckBox text="Vega?" fx:id="cbStreamVega" />
+                             </RadioButton>
+                         </HBox>
+
+                             <CheckBox text="Fekete-fehér?" fx:id="cbStreamSzines" />
                          </HBox>
                      <Button onAction="#FilterStream" text="Szűrés" />
                      <TableView fx:id="tStream" />
